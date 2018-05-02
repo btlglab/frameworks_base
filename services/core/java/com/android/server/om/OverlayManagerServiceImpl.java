@@ -354,6 +354,11 @@ final class OverlayManagerServiceImpl {
             }
         }
 
+        // check for enabled framework overlays
+        if (!"android".equals(targetPackageName)) {
+            modified = modified || !getEnabledOverlayPackageNames("android", userId).isEmpty();
+        }
+
         if (modified) {
             mListener.onOverlaysChanged(targetPackageName, userId);
         }

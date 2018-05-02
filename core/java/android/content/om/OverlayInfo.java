@@ -48,6 +48,7 @@ public final class OverlayInfo implements Parcelable {
             STATE_ENABLED_STATIC,
             // @Deprecated STATE_TARGET_IS_BEING_REPLACED,
             STATE_OVERLAY_IS_BEING_REPLACED,
+            STATE_OVERLAY_NOT_AVAILABLE,
     })
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
@@ -122,6 +123,13 @@ public final class OverlayInfo implements Parcelable {
      * @hide
      */
     public static final int STATE_ENABLED_STATIC = 6;
+
+    /**
+     * The overlay package is currently disabled by the package manager. For
+     * all intents and purposes, outside the package manager, it is like the
+     * overlay package simply was not installed.
+     */
+    public static final int STATE_OVERLAY_NOT_AVAILABLE = 7;
 
     /**
      * Overlay category: theme.
@@ -310,6 +318,7 @@ public final class OverlayInfo implements Parcelable {
             case STATE_ENABLED_STATIC:
             case STATE_TARGET_IS_BEING_REPLACED:
             case STATE_OVERLAY_IS_BEING_REPLACED:
+            case STATE_OVERLAY_NOT_AVAILABLE:
                 break;
             default:
                 throw new IllegalArgumentException("State " + state + " is not a valid state");
@@ -392,6 +401,8 @@ public final class OverlayInfo implements Parcelable {
                 return "STATE_TARGET_IS_BEING_REPLACED";
             case STATE_OVERLAY_IS_BEING_REPLACED:
                 return "STATE_OVERLAY_IS_BEING_REPLACED";
+            case STATE_OVERLAY_NOT_AVAILABLE:
+                return "STATE_OVERLAY_NOT_AVAILABLE";
             default:
                 return "<unknown state>";
         }

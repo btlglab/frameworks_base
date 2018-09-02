@@ -135,15 +135,8 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
-    name: "projekt.substratum.theme.xml",
-    sub_dir: "permissions",
-    src: "projekt.substratum.theme.xml",
-    filename_from_src: true,
-}
-
-prebuilt_etc {
-    name: "substratum_theme.xml",
+    name: "substratum-theme-feature.xml",
     sub_dir: "sysconfig",
-    src: "substratum_theme.xml",
+    src: "substratum-theme-feature.xml",
     filename_from_src: true,
 }

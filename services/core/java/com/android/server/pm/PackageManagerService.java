@@ -12095,23 +12095,28 @@ public class PackageManagerService extends IPackageManager.Stub
                         throw new PackageManagerException("Overlay " + pkg.packageName +
                                 " is static but not pre-installed.");
                     }
-
-                    // A non-preloaded overlay packages must have targetSdkVersion >= Q, or be
-                    // signed with the platform certificate. Check this in increasing order of
-                    // computational cost.
-                    if (pkg.applicationInfo.targetSdkVersion < Build.VERSION_CODES.Q) {
-                        final PackageSetting platformPkgSetting =
-                                mSettings.getPackageLPr("android");
-                        if ((platformPkgSetting.signatures.mSigningDetails
-                                    != PackageParser.SigningDetails.UNKNOWN)
+                    
+                    // The only case where we allow installation of a non-system overlay is when
+                    // its signature is signed with a whitelisted OEM theme system certificate.
+                    ArraySet<String> wlSigApps =
+                            SystemConfig.getInstance().getThemeSystemSignatureWhitelistedApps();
+                    boolean sigAllowed = false;
+                    for (String pkgName : wlSigApps) {
+                        PackageSetting platformPkgSetting = mSettings.getPackageLPr(pkgName);
+                        sigAllowed = (platformPkgSetting.signatures.mSigningDetails
+                                != PackageParser.SigningDetails.UNKNOWN)
                                 && (compareSignatures(
                                         platformPkgSetting.signatures.mSigningDetails.signatures,
                                         pkg.mSigningDetails.signatures)
-                                    != PackageManager.SIGNATURE_MATCH)) {
-                            throw new PackageManagerException("Overlay " + pkg.packageName
-                                    + " must target Q or later, "
-                                    + "or be signed with the platform certificate");
+                                                == PackageManager.SIGNATURE_MATCH);
+                        if (sigAllowed) {
+                            break;
                         }
+                    }
+
+                    if (!sigAllowed) {
+                        throw new PackageManagerException("Overlay " + pkg.packageName +
+                                " must be signed with a whitelisted OEM theme system certificate.");
                     }
 
                     // A non-preloaded overlay package, without <overlay android:targetName>, will

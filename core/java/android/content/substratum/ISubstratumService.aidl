@@ -167,4 +167,3 @@ interface ISubstratumService {
      */
     boolean setEnabled(in String packageName, in boolean enable, in int userId);
 }
-

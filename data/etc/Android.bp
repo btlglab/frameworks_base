@@ -136,14 +136,12 @@ prebuilt_etc {
 
 prebuilt_etc {
     name: "substratum-theme-feature.xml",
-    sub_dir: "sysconfig",
     src: "substratum-theme-feature.xml",
-    filename_from_src: true,
+    sub_dir: "sysconfig",
 }
 
 prebuilt_etc {
     name: "substratum-sysconfig.xml",
-    sub_dir: "sysconfig",
     src: "substratum-sysconfig.xml",
-    filename_from_src: true,
+    sub_dir: "sysconfig",
 }

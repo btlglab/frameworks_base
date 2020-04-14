@@ -50,16 +50,14 @@ public class ImageUtilities {
     }
 
 /* blur routine */
-    public static Bitmap blurImage(Context context, Bitmap inputBitmap) {
-        float BLUR_RADIUS = 7.5f;
-
+    public static Bitmap blurImage(Context context, Bitmap inputBitmap, float radius) {
         Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
 
         RenderScript rs = RenderScript.create(context);
         ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
         Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
         Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);  
-        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setRadius(radius);
         theIntrinsic.setInput(tmpIn);
         theIntrinsic.forEach(tmpOut);
         tmpOut.copyTo(outputBitmap);
